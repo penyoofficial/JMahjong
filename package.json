@@ -1,0 +1,15 @@
+{
+  "name": "penyo-marjong",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./src/main.ts",
+  "scripts": {
+    "dev": "node --loader ts-node/esm --inspect ./src/main.ts",
+    "f": "prettier --write ./src/* ./src/*/*"
+  },
+  "author": "Penyo",
+  "license": "ISC",
+  "dependencies": {
+    "ts-node": "^10.9.1"
+  }
+}
