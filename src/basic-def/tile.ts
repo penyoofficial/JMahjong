@@ -30,11 +30,11 @@ export class Tile {
       };
 
   /**
-   * 获取随机牌实例。
+   * 构造随机牌实例。
    */
   constructor();
   /**
-   * 获取指定序号的牌实例。
+   * 构造指定序号的牌实例。
    *
    * |序号段|牌类型|
    * |:-:|:-:|
@@ -49,7 +49,7 @@ export class Tile {
   constructor(id?: number) {
     if (!id) id = Math.round(Math.random() * 136);
     else if (id < 1 || id > 136 || id % 1 !== 0)
-      throw new Error("Invaild parameter!");
+      throw new Error("An invalid tile id is given!");
 
     const NumWeightArr = [1, 2, 3, 4, 5, 6, 7, 8, 9] as const;
     const CharWeightArr = ["东", "南", "西", "北", "中", "发", "板"] as const;

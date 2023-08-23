@@ -1,4 +1,4 @@
-import { Tile } from "./tile";
+import { Tile } from "@/basic-def/tile";
 
 /**
  * 叫牌规则。
@@ -133,6 +133,8 @@ export class BidRules {
       result[groupValue].push(t);
       return result;
     });
+
+    // to be edited
 
     return flag;
   }

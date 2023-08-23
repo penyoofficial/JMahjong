@@ -1,7 +1,10 @@
-import { LocalRules } from "../basic-def/local-rules";
-import { Tile } from "../basic-def/tile";
-import { Player } from "./player";
+import { LocalRules } from "@/basic-def/local-rules";
+import { Tile } from "@/basic-def/tile";
+import { Player } from "@/holder/player";
 
+/**
+ * 牌桌。
+ */
 export class Table {
   /** 游戏是否已结束 */
   isEnd = false;
@@ -9,28 +12,30 @@ export class Table {
   /** 摸牌堆 */
   drawingPile: Tile[] = [];
   /** 弃牌堆 */
-  discardPile: [...Tile[][]] & { length: 4 } = [[], [], [], []];
+  discardPile: [...(Tile[][] & { length: 4 })] = [[], [], [], []];
 
   /** 玩家 */
-  players: [...Player[]] & { length: 4 } = [
-    new Player(),
-    new Player(),
-    new Player(),
-    new Player(),
-  ];
-  /** 活跃玩家 */
-  activePlayerID: 0;
+  players: [...(Player[] & { length: 0 | 4 })] = [];
+  /** 活跃玩家 ID */
+  activePlayerID: 0 | 1 | 2 | 3 = 0;
 
+  /**
+   * 构造牌桌实例。
+   *
+   * @param rules 本地规则组
+   */
   constructor(rules?: LocalRules[]) {
     for (let i = 1; i <= 136; i++) this.drawingPile.push(new Tile(i));
     this.shuffle();
-    for (let i = 0; i < 3; i++)
-      this.players.forEach((p) => {
-        for (let j = 0; j < 4; j++) p.draw(this.drawingPile.pop() as Tile);
-      });
-    this.players.forEach((p) => {
-      p.draw(this.drawingPile.pop() as Tile);
-    });
+
+    let players: Player[] = [];
+    for (let j = 0; j < 4; j++)
+      players.push(
+        new Player(this.drawingPile.splice(0, 13) as Tile[] & { length: 13 }),
+      );
+    this.players = players;
+
+    setTimeout(this.next);
   }
 
   /**
@@ -47,14 +52,30 @@ export class Table {
   }
 
   /**
-   * 结束当前玩家的回合。
+   * 获取当前活跃玩家。
    */
-  next() {}
+  getActivePlayer() {
+    return this.players[this.activePlayerID];
+  }
+
+  /**
+   * 进入下一回合。
+   */
+  next() {
+    if (this.isEnd) return;
+    const activeOne = this.getActivePlayer();
+    activeOne.unlock();
+    if (this.drawingPile.length > 0)
+      activeOne.draw(this.drawingPile.splice(0, 1)[0]);
+    else this.end("draw");
+  }
 
   /**
    * 结束游戏并冻结结果。
+   *
+   * @param reason 游戏结束原因。只能是和牌或者流局。
    */
-  end() {
+  end(reason: "hu" | "draw") {
     if (this.isEnd) return false;
 
     function deepFreeze(obj: any) {
@@ -68,6 +89,7 @@ export class Table {
 
     this.isEnd = true;
     deepFreeze(this);
+    console.log(reason);
     return true;
   }
 }
