@@ -7,10 +7,6 @@ package net.penyo.jmahjong.type;
  */
 public enum TileType {
     /**
-     * 饼/筒（1-9：一饼-九饼）
-     */
-    CIRCLE,
-    /**
      * 条/索（1-9：一条-九条）
      */
     BAMBOO,
@@ -18,6 +14,10 @@ public enum TileType {
      * 万（1-9：一万-九万）
      */
     CHARACTER,
+    /**
+     * 饼/筒（1-9：一饼-九饼）
+     */
+    CIRCLE,
     /**
      * 风（1-4：东风-北风）
      */

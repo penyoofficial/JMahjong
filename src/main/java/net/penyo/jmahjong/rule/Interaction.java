@@ -9,6 +9,7 @@ import net.penyo.util.HashRuleEngine;
  * @author Penyo
  */
 public class Interaction extends HashRuleEngine<InteractionType> {
+
     public Interaction() {
         put(InteractionType.CAN_CHOW, (Object) -> null);
     }
